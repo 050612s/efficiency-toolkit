@@ -1,71 +1,50 @@
 # 🛠️ Efficiency Toolkit - 在线效率工具箱
 
-> 聚合 30+ 常用在线工具，无需安装，打开浏览器即可使用。包括 PDF 工具、图片处理、格式转换、文本处理等。所有工具纯前端实现，无需服务器。
+> **🔥 30+ 免费在线工具，打开浏览器就能用！**
+> 纯前端处理，无需服务器，保护隐私。无需注册，无需登录。
 
-## ✨ 功能
+**🌐 立即访问：[https://050612s.github.io/efficiency-toolkit/](https://050612s.github.io/efficiency-toolkit/)**
 
-### 📄 PDF 工具
-- PDF 合并
-- PDF 拆分
-- PDF 转 Word/图片/文本
-- PDF 压缩
-- PDF 加密/解密
+---
 
-### 🖼️ 图片工具
-- 图片压缩
-- PNG/JPG 互转
-- 图片裁剪
-- 图片水印
-- Base64 编解码
+## ✨ 功能一览
 
-### 🔄 格式转换
-- 视频转 GIF
-- 音频格式转换
-- Markdown 编辑器
-- JSON 格式化
-- CSV 编辑器
+| 分类 | 工具数 | 示例 |
+|------|--------|------|
+| 📝 文本工具 | 8个 | 去重、字数统计、密码生成、随机数 |
+| 🖼️ 图片工具 | 5个 | Base64互转、图片压缩、PNG转JPG |
+| 📄 PDF工具 | 4个 | PDF拆分/合并/预览 |
+| 🔄 格式转换 | 7个 | JSON格式化、颜色转换、时间戳 |
+| 🎵 媒体工具 | 4个 | 二维码生成/解码 |
+| 🛡️ 安全工具 | 4个 | 哈希计算、JWT解析 |
+| 📋 开发者 | 5个 | Cron表达式、Markdown预览 |
 
-### 📝 文本工具
-- 文本去重
-- 敏感词检测
-- 文本对比
-- 随机数生成
-- 密码生成器
+---
 
-## 🚀 快速使用
+## 🚀 特点
 
-直接打开 `index.html` 即可使用，或部署到 GitHub Pages：
+- ✅ **完全免费** - 无需注册，无使用限制
+- ✅ **隐私安全** - 数据在本地处理，不上传服务器
+- ✅ **响应式** - 手机、平板、电脑都能用
+- ✅ **无需安装** - 打开即用，永久更新
+- ✅ **开源透明** - 代码完全开放，可自行部署
 
-```bash
-# Fork 本项目后，Settings → Pages → 选择 main branch
-# 即可通过 https://你的用户名.github.io/efficiency-toolkit 访问
-```
+## 📦 自部署
 
-## 📁 项目结构
+`ash
+git clone https://github.com/050612s/efficiency-toolkit.git
+# 直接用浏览器打开 index.html
+# 或部署到 GitHub Pages、Vercel、Netlify
+`
 
-```
-efficiency-toolkit/
-├── index.html           # 主页面
-├── css/
-│   └── style.css       # 样式文件
-├── js/
-│   ├── app.js          # 主逻辑
-│   ├── pdf.js          # PDF 处理
-│   ├── image.js        # 图片处理
-│   ├── converter.js    # 格式转换
-│   └── text.js         # 文本工具
-├── assets/             # 静态资源
-├── README.md
-└── LICENSE
-```
+## 💰 变现计划
 
-## 🌐 部署到 GitHub Pages
+本工具目前免费运营，未来计划：
+- 高级功能付费订阅
+- 开发者 API 接入
 
-1. Fork 本仓库
-2. 进入 Settings → Pages
-3. Source 选择 `main` 分支
-4. 保存，等待 2 分钟即可访问
+欢迎 Star ⭐ 支持！
 
 ## 📄 License
 
-MIT License
+MIT License - 欢迎 Fork 和贡献代码！
