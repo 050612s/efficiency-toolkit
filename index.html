@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -209,79 +209,18 @@
 <script>
 // ========== 工具定义 ==========
 const TOOLS = [
-    {
-        category: "📝 文本工具",
-        tools: [
-            { id: "dedup", name: "文本去重", icon: "🔁", desc: "去除重复行/段落" },
-            { id: "keyword", name: "关键词提取", icon: "🔑", desc: "提取文本核心关键词" },
-            { id: "contrast", name: "文本对比", icon: "📊", desc: "找出两个文本的差异" },
-            { id: "counter", name: "字数统计", icon: "📏", desc: "中英文字数、行数统计" },
-            { id: "password", name: "密码生成", icon: "🔐", desc: "生成随机安全密码" },
-            { id: "uuid", name: "UUID生成", icon: "🆔", desc: "批量生成UUID" },
-            { id: "random", name: "随机数生成", icon: "🎲", desc: "生成随机数/抽奖" },
-            { id: "regex", name: "正则测试", icon: "🔍", desc: "正则表达式实时测试" },
-        ]
-    },
-    {
-        category: "🖼️ 图片工具",
-        tools: [
-            { id: "img2base64", name: "图片转Base64", icon: "🖼️", desc: "图片转为Base64编码" },
-            { id: "base642img", name: "Base64转图片", icon: "🖼️", desc: "Base64还原为图片" },
-            { id: "imgcompress", name: "图片压缩", icon: "📦", desc: "压缩图片文件大小" },
-            { id: "png2jpg", name: "PNG转JPG", icon: "🔄", desc: "PNG图片转为JPG格式" },
-            { id: "img2icon", name: "图片转ICO", icon: "🏁", desc: "生成网站图标.ico" },
-        ]
-    },
-    {
-        category: "📄 PDF工具",
-        tools: [
-            { id: "pdfsplit", name: "PDF拆分", icon: "✂️", desc: "按页数拆分PDF" },
-            { id: "pdfmerge", name: "PDF合并", icon: "📚", desc: "合并多个PDF文件" },
-            { id: "pdftext", name: "PDF转文本", icon: "📝", desc: "提取PDF中的文字" },
-            { id: "pdfpreview", name: "PDF预览", icon: "👁️", desc: "在线预览PDF内容" },
-        ]
-    },
-    {
-        category: "🔄 格式转换",
-        tools: [
-            { id: "jsonfmt", name: "JSON格式化", icon: "{ }", desc: "JSON美化/压缩/校验" },
-            { id: "xmlfmt", name: "XML格式化", icon: "📄", desc: "XML美化/压缩" },
-            { id: "timetimestamp", name: "时间戳转换", icon: "🕐", desc: "时间戳与日期互转" },
-            { id: "colorpicker", name: "颜色转换", icon: "🎨", desc: "HEX/RGB/HSL互转" },
-            { id: "unitconverter", name: "单位换算", icon: "📐", desc: "长度/重量/温度换算" },
-            { id: "urlencoder", name: "URL编码", icon: "🔗", desc: "URL编码/解码" },
-            { id: "htmlencode", name: "HTML实体", icon: "🏷️", desc: "HTML实体编解码" },
-        ]
-    },
-    {
-        category: "🎵 媒体工具",
-        tools: [
-            { id: "video2gif", name: "视频转GIF", icon: "🎬", desc: "截取视频片段转GIF" },
-            { id: "qrcode", name: "二维码生成", icon: "📱", desc: "生成二维码/链接转二维码" },
-            { id: "barcode", name: "条形码生成", icon: "📊", desc: "生成各种条形码" },
-            { id: "qrdecoder", name: "二维码解码", icon: "📷", desc: "识别图片中的二维码" },
-        ]
-    },
-    {
-        category: "🛡️ 安全工具",
-        tools: [
-            { id: "hashgen", name: "哈希生成", icon: "#", desc: "MD5/SHA等哈希计算" },
-            { id: "hashverify", name: "哈希校验", icon: "✅", desc: "验证文件哈希值" },
-            { id: "jwtdecoder", name: "JWT解析", icon: "🔓", desc: "解码JWT Token" },
-            { id: "uuidgen", name: "随机密码", icon: "🔑", desc: "强随机密码生成" },
-        ]
-    },
-    {
-        category: "📋 开发者",
-        tools: [
-            { id: "crontab", name: "Cron表达式", icon: "⏰", desc: "Cron时间表达式生成" },
-            { id: "base64text", name: "Base64文本", icon: "📝", desc: "文本Base64编码解码" },
-            { id: "markdown", name: "Markdown预览", icon: "📝", desc: "实时预览Markdown" },
-            { id: "colorformat", name: "颜色格式", icon: "🎨", desc: "颜色代码互转" },
-            { id: "jwtgen", name: "JWT生成", icon: "🔐", desc: "生成测试用JWT" },
-        ]
-    }
-];
+
+        {
+            category: "📋 办公辅助",
+            tools: [
+                { id: "slug", name: "Slug生成器", icon: "🔗", desc: "URL友好字符串转换" },
+                { id: "wordcount", name: "WordCount", icon: "📊", desc: "词频统计 / 词云数据" },
+                { id: "table2csv", name: "表格转CSV", icon: "📄", desc: "Excel/网页表格转CSV" },
+                { id: "timer", name: "计时器", icon: "⏱️", desc: "倒计时 / 秒表" },
+                { id: "pinyin", name: "汉字转拼音", icon: "🅰️", desc: "汉字转拼音首字母/全拼" },
+                { id: "difftext", name: "Diff文本对比", icon: "📝", desc: "高亮显示两段文本差异" },
+            ]
+        },];
 
 // ========== 工具函数 ==========
 function showToast(msg) {
@@ -1005,6 +944,196 @@ window.handleHashFile = handleHashFile;
 
 // Init
 renderTools();
+
+TOOL_FNS.slug = () => ({
+    inputs: <input type="text" id="slug_in" placeholder="输入中文字符串">
+<div class="btn-group"><button class="btn btn-primary" onclick="runTool('slug')">转换</button></div>,
+    action: () => {
+        const t = document.getElementById("slug_in").value;
+        return t.toLowerCase().replace(/[\s\u4e00-\u9fa5]+/g, '-').replace(/[^\w-]/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+    }
+});
+
+TOOL_FNS.wordcount = () => ({
+    inputs: <textarea id="wc_in" rows="8" placeholder="输入文本进行词频统计..."></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('wordcount')">统计词频</button>
+</div>
+<div id="wc_result" style="display:none"></div>,
+    action: () => {
+        const t = document.getElementById("wc_in").value;
+        const words = t.match(/[\w\u4e00-\u9fa5]+/g) || [];
+        const freq = {};
+        words.forEach(w => { freq[w] = (freq[w]||0)+1; });
+        const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
+        let html = '<table style="width:100%;border-collapse:collapse;font-size:0.85rem">';
+        html += '<tr><th style="text-align:left;padding:4px 8px;border-bottom:1px solid var(--border)">词汇</th><th style="padding:4px 8px;border-bottom:1px solid var(--border)">出现次数</th></tr>';
+        sorted.forEach(([w,c]) => { html += '<tr><td style="padding:4px 8px;border-bottom:1px solid var(--border)">'+w+'</td><td style="text-align:center;padding:4px 8px;border-bottom:1px solid var(--border);color:var(--primary)">'+c+'</td></tr>'; });
+        html += '</table>';
+        document.getElementById("wc_result").innerHTML = html;
+        document.getElementById("wc_result").style.display = "block";
+        return '';
+    }
+});
+
+TOOL_FNS.table2csv = () => ({
+    inputs: <textarea id="t2c_in" rows="8" placeholder="粘贴带表格的文本，每行用 Tab 分隔，标题行为第一行：\n姓名\t年龄\t城市\n张三\t25\t北京"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('table2csv')">转 CSV</button>
+</div>,
+    action: () => {
+        const lines = document.getElementById("t2c_in").value.split("\n").filter(l=>l.trim());
+        const csv = lines.map(l => l.split("\t").map(c=>"").join(",")).join("\n");
+        return csv;
+    }
+});
+
+TOOL_FNS.timer = () => ({
+    inputs: <div style="text-align:center;font-size:3rem;font-weight:700;margin:1rem 0;font-variant-numeric:tabular-nums" id="timer_display">00:00:00</div>
+<div class="btn-group" style="justify-content:center">
+<button class="btn btn-primary" onclick="runTool('timer_start')">开始</button>
+<button class="btn" onclick="runTool('timer_stop')">停止</button>
+<button class="btn btn-danger" onclick="runTool('timer_reset')">重置</button>
+</div>
+<div style="text-align:center;margin-top:1rem">
+<input type="number" id="timer_set" value="25" style="width:80px;text-align:center" placeholder="分钟">
+<button class="btn btn-primary" onclick="runTool('timer_countdown')">倒计时</button>
+</div>,
+    action: () => ''
+});
+
+TOOL_FNS.pinyin = () => ({
+    inputs: <input type="text" id="py_in" placeholder="输入汉字" style="font-size:1.2rem">
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('pinyin_full')">全拼</button>
+<button class="btn" onclick="runTool('pinyin_abbr')">首字母</button>
+</div>,
+    action: () => {
+        const t = document.getElementById("py_in").value;
+        // 简单拼音映射（常用字）
+        const pinyinMap = {'的':'de','是':'shi','我':'wo','你':'ni','在':'zai','有':'you','和':'he','了':'le','不':'bu','这':'zhe','中':'zhong','大':'da','来':'lai','上':'shang','为':'wei','个':'ge','们':'men','到':'dao','说':'shuo','国':'guo','地':'di','出':'chu','道':'dao','也':'ye','子':'zi','时':'shi','年':'nian','得':'de','着':'zhuo','就':'jiu','要':'yao','么':'me','看':'kan','学':'xue','自己':'ziji'};
+        const words = t.match(/[\u4e00-\u9fa5]/g) || [];
+        return words.map(c=>pinyinMap[c]||c).join(' ');
+    }
+});
+
+TOOL_FNS.difftext = () => ({
+    inputs: <label>原文</label><textarea id="diff_a" rows="5" placeholder="原文..."></textarea>
+<label>修改后</label><textarea id="diff_b" rows="5" placeholder="修改后..."></textarea>
+<div class="btn-group"><button class="btn btn-primary" onclick="runTool('difftext')">对比</button></div>
+<div id="diff_result" style="display:none"></div>,
+    action: () => {
+        const a = document.getElementById("diff_a").value;
+        const b = document.getElementById("diff_b").value;
+        const al = a.split("\n"), bl = b.split("\n");
+        let html = '<div style="font-size:0.85rem;line-height:1.8">';
+        const max = Math.max(al.length, bl.length);
+        for (let i = 0; i < max; i++) {
+            const av = al[i]||'', bv = bl[i]||'';
+            if (av === bv) {
+                html += '<div style="color:var(--text-muted)">  '+av+'</div>';
+            } else {
+                if (av) html += '<div style="color:var(--danger);background:rgba(239,68,68,0.1);padding:0 4px">- '+av+'</div>';
+                if (bv) html += '<div style="color:var(--success);background:rgba(16,185,129,0.1);padding:0 4px">+ '+bv+'</div>';
+            }
+        }
+        html += '</div>';
+        document.getElementById("diff_result").innerHTML = html;
+        document.getElementById("diff_result").style.display = "block";
+        return '';
+    }
+});
+
+// 计时器状态
+window._timerInterval = null;
+window._timerSeconds = 0;
+window._timerMode = 'stopwatch';
+
+// 全局 runTool 扩展
+const _origRunTool = window.runTool;
+window.runTool = function(id) {
+    if (id === 'timer_start') {
+        window._timerMode = 'stopwatch';
+        if (window._timerInterval) clearInterval(window._timerInterval);
+        window._timerInterval = setInterval(() => {
+            window._timerSeconds++;
+            const h=String(Math.floor(window._timerSeconds/3600)).padStart(2,'0');
+            const m=String(Math.floor((window._timerSeconds%3600)/60)).padStart(2,'0');
+            const s=String(window._timerSeconds%60).padStart(2,'0');
+            document.getElementById('timer_display').textContent = h+':'+m+':'+s;
+        }, 1000);
+    } else if (id === 'timer_stop') {
+        if (window._timerInterval) { clearInterval(window._timerInterval); window._timerInterval = null; }
+    } else if (id === 'timer_reset') {
+        if (window._timerInterval) { clearInterval(window._timerInterval); window._timerInterval = null; }
+        window._timerSeconds = 0;
+        document.getElementById('timer_display').textContent = '00:00:00';
+    } else if (id === 'timer_countdown') {
+        const mins = parseInt(document.getElementById('timer_set').value) || 1;
+        window._timerSeconds = mins * 60;
+        window._timerMode = 'countdown';
+        if (window._timerInterval) clearInterval(window._timerInterval);
+        window._timerInterval = setInterval(() => {
+            window._timerSeconds--;
+            if (window._timerSeconds <= 0) {
+                clearInterval(window._timerInterval);
+                document.getElementById('timer_display').textContent = '⏰ 时间到！';
+                return;
+            }
+            const h=String(Math.floor(window._timerSeconds/3600)).padStart(2,'0');
+            const m=String(Math.floor((window._timerSeconds%3600)/60)).padStart(2,'0');
+            const s=String(window._timerSeconds%60).padStart(2,'0');
+            document.getElementById('timer_display').textContent = h+':'+m+':'+s;
+        }, 1000);
+    } else if (id === 'slug') {
+        const t = document.getElementById('slug_in').value;
+        const result = t.toLowerCase().replace(/[\s\u4e00-\u9fa5]+/g, '-').replace(/[^\w-]/g, '').replace(/--+/g, '-').replace(/^-+|-+$/g, '');
+        const rb = document.querySelector('.panel.active .result-box[data-result]');
+        if (rb) { rb.style.display='block'; rb.className='result-box success'; rb.innerHTML = result; }
+    } else if (id === 'wordcount') {
+        const t = document.getElementById('wc_in').value;
+        const words = t.match(/[\w\u4e00-\u9fa5]+/g)||[];
+        const freq={}; words.forEach(w=>{freq[w]=(freq[w]||0)+1;});
+        const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
+        let html='<table style="width:100%;border-collapse:collapse;font-size:0.85rem">';
+        html+='<tr><th style="text-align:left;padding:4px 8px;border-bottom:1px solid var(--border)">词汇</th><th style="padding:4px 8px;border-bottom:1px solid var(--border)">次数</th></tr>';
+        sorted.forEach(([w,c])=>{html+='<tr><td style="padding:4px 8px;border-bottom:1px solid var(--border)">'+w+'</td><td style="text-align:center;padding:4px 8px;border-bottom:1px solid var(--border);color:var(--primary)">'+c+'</td></tr>';});
+        html+='</table>';
+        document.getElementById('wc_result').innerHTML=html;
+        document.getElementById('wc_result').style.display='block';
+    } else if (id === 'table2csv') {
+        const lines = document.getElementById('t2c_in').value.split('\n').filter(l=>l.trim());
+        const csv = lines.map(l=>l.split('\t').map(c=>'\"'+c.trim().replace(/\"/g,'\"\"')+'\"').join(',')).join('\n');
+        const rb=document.querySelector('.panel.active .result-box[data-result]');
+        if(rb){rb.style.display='block';rb.className='result-box success';rb.innerHTML=csv;}
+    } else if (id === 'pinyin_full'||id==='pinyin_abbr') {
+        const t=document.getElementById('py_in').value;
+        const py={'的':'de','是':'shi','我':'wo','你':'ni','在':'zai','有':'you','和':'he','了':'le','不':'bu','这':'zhe','中':'zhong','大':'da','来':'lai','上':'shang','为':'wei','个':'ge','们':'men','到':'dao','说':'shuo','国':'guo','地':'di','出':'chu','道':'dao','也':'ye','子':'zi','时':'shi','年':'nian','得':'de','着':'zhuo','就':'jiu','要':'yao','看':'kan','学':'xue','自':'zi','己':'ji','一':'yi','个':'ge','他':'ta','她':'ta','它':'ta','们':'men','那':'na','里':'li','会':'hui','能':'neng','去':'qu','过':'guo','好':'hao','还':'hai','对':'dui','很':'hen','当':'dang','样':'yang','但':'dan','又':'you','可':'ke','只':'zhi','现':'xian','等':'deng','把':'ba','让':'rang','给':'gei','没':'mei','从':'cong','两':'liang','再':'zai','知':'zhi','道':'dao','无':'wu','多':'duo','何':'he','起':'qi','做':'zuo','回':'hui','每':'mei','认':'ren','真':'zhen','加':'jia','机':'ji','本':'ben','身':'shen','长':'zhang','间':'jian','因':'yin','所':'suo','话':'hua','或':'huo','清':'qing','想':'xiang','如':'ru','方':'fang','此':'ci','系':'xi','公':'gong','总':'zong','法':'fa','应':'ying','场':'chang','更':'geng','比':'bi','展':'zhan','直':'zhi','资':'zi','产':'chan','美':'mei','别':'bie','感':'gan','情':'qing','色':'se','形':'xing','报':'bao','望':'wang','数':'shu','重':'zhong','反':'fan','意':'yi','见':'jian','务':'wu','先':'xian','及':'ji','活':'huo','速':'su','统':'tong','便':'bian','题':'ti','区':'qu','内':'nei','件':'jian','期':'qi','管':'guan','保':'bao','统':'tong','则':'ze','提':'ti','立':'li','即':'ji','提':'ti','度':'du','却':'que','特':'te','解':'jie','并':'bing','量':'liang','程':'cheng','全':'quan','权':'quan','见':'jian','参':'can','变':'bian','决':'jue','专':'zhuan','设':'she','造':'zao','书':'shu','光':'guang','海':'hai','信':'xin','服':'fu','备':'bei','质':'zhi','标':'biao','义':'yi','难':'nan','究':'jiu','深':'shen','近':'jin','维':'wei','运':'yun','口':'kou','码':'ma','据':'ju','典':'dian','引':'yin','放':'fang','父':'fu','总':'zong','议':'yi','际':'ji','联':'lian','合':'he','组':'zu','织':'zhi','济':'ji','核':'he','果':'guo','效':'xiao','查':'cha','格':'ge','致':'zhi','测':'ce','似':'si','属':'shu','值':'zhi','示':'shi','续':'xu','火':'huo','土':'tu','白':'bai','山':'shan','川':'chuan','省':'sheng','州':'zhou','城':'cheng','市':'shi','区':'qu','县':'xian','路':'lu','街':'jie','道':'dao','楼':'lou','房':'fang','车':'che','站':'zhan','台':'tai','市':'shi','银':'yin','行':'hang','医':'yi','院':'yuan','校':'xiao','学':'xue','生':'sheng','班':'ban','级':'ji','年':'nian','月':'yue','日':'ri','周':'zhou','时':'shi','分':'fen','秒':'miao'};
+        const words=t.match(/[\u4e00-\u9fa5]/g)||[];
+        const pys=words.map(c=>py[c]||c);
+        const result=id==='pinyin_abbr'?pys.map(p=>p[0]||'').join('').toUpperCase():pys.join(' ');
+        const rb=document.querySelector('.panel.active .result-box[data-result]');
+        if(rb){rb.style.display='block';rb.className='result-box success';rb.innerHTML=result;}
+    } else if (id==='difftext') {
+        const a=document.getElementById('diff_a').value.split('\n'),b=document.getElementById('diff_b').value.split('\n');
+        let html='<div style="font-size:0.85rem;line-height:1.8">';
+        const max=Math.max(a.length,b.length);
+        for(let i=0;i<max;i++){
+            const av=a[i]||'',bv=b[i]||'';
+            if(av===bv&&!av)continue;
+            if(av!==bv){
+                if(av)html+='<div style="color:var(--danger)">- '+av+'</div>';
+                if(bv)html+='<div style="color:var(--success)">+ '+bv+'</div>';
+            } else {html+='<div style="color:var(--text-muted)">  '+av+'</div>';}
+        }
+        html+='</div>';
+        document.getElementById('diff_result').innerHTML=html;
+        document.getElementById('diff_result').style.display='block';
+    } else {
+        _origRunTool(id);
+    }
+};
+
 </script>
 </body>
 </html>
