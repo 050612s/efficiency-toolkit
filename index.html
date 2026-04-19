@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛠️ Efficiency Toolkit - 在线效率工具箱</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+        body {
+            font-family: -apple-system, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .header p { color: var(--text-muted); font-size: 0.95rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .tab {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .tab:hover { border-color: var(--primary-light); color: var(--text); }
+        .tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tool-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+        }
+        .tool-card .icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .tool-card .name { font-weight: 600; margin-bottom: 0.3rem; }
+        .tool-card .desc { color: var(--text-muted); font-size: 0.8rem; }
+        .panel { display: none; }
+        .panel.active { display: block; }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .panel-header h2 { font-size: 1.2rem; }
+        .close-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .close-btn:hover { border-color: var(--danger); color: var(--danger); }
+        textarea, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            resize: vertical;
+            font-family: inherit;
+        }
+        textarea:focus, input:focus { outline: none; border-color: var(--primary); }
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-light); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .result-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 60px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .result-box.success { border-color: var(--success); }
+        .copy-btn {
+            float: right;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .copy-btn:hover { color: var(--text); border-color: var(--primary); }
+        label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .progress-bar .bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .file-drop {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1rem;
+        }
+        .file-drop:hover, .file-drop.dragover {
+            border-color: var(--primary);
+            background: rgba(79,70,229,0.05);
+        }
+        .file-drop input { display: none; }
+        .file-drop p { color: var(--text-muted); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛠️ Efficiency Toolkit</h1>
+        <p>30+ 免费在线工具，无需注册，打开即用 · 纯前端处理，保护隐私</p>
+    </div>
+    <div class="container">
+        <div class="tabs" id="tabs"></div>
+        <div id="toolPanels"></div>
+    </div>
+    <div class="toast" id="toast"></div>
+
+<script>
+// ========== 工具定义 ==========
+const TOOLS = [
+    {
+        category: "📝 文本工具",
+        tools: [
+            { id: "dedup", name: "文本去重", icon: "🔁", desc: "去除重复行/段落" },
+            { id: "keyword", name: "关键词提取", icon: "🔑", desc: "提取文本核心关键词" },
+            { id: "contrast", name: "文本对比", icon: "📊", desc: "找出两个文本的差异" },
+            { id: "counter", name: "字数统计", icon: "📏", desc: "中英文字数、行数统计" },
+            { id: "password", name: "密码生成", icon: "🔐", desc: "生成随机安全密码" },
+            { id: "uuid", name: "UUID生成", icon: "🆔", desc: "批量生成UUID" },
+            { id: "random", name: "随机数生成", icon: "🎲", desc: "生成随机数/抽奖" },
+            { id: "regex", name: "正则测试", icon: "🔍", desc: "正则表达式实时测试" },
+        ]
+    },
+    {
+        category: "🖼️ 图片工具",
+        tools: [
+            { id: "img2base64", name: "图片转Base64", icon: "🖼️", desc: "图片转为Base64编码" },
+            { id: "base642img", name: "Base64转图片", icon: "🖼️", desc: "Base64还原为图片" },
+            { id: "imgcompress", name: "图片压缩", icon: "📦", desc: "压缩图片文件大小" },
+            { id: "png2jpg", name: "PNG转JPG", icon: "🔄", desc: "PNG图片转为JPG格式" },
+            { id: "img2icon", name: "图片转ICO", icon: "🏁", desc: "生成网站图标.ico" },
+        ]
+    },
+    {
+        category: "📄 PDF工具",
+        tools: [
+            { id: "pdfsplit", name: "PDF拆分", icon: "✂️", desc: "按页数拆分PDF" },
+            { id: "pdfmerge", name: "PDF合并", icon: "📚", desc: "合并多个PDF文件" },
+            { id: "pdftext", name: "PDF转文本", icon: "📝", desc: "提取PDF中的文字" },
+            { id: "pdfpreview", name: "PDF预览", icon: "👁️", desc: "在线预览PDF内容" },
+        ]
+    },
+    {
+        category: "🔄 格式转换",
+        tools: [
+            { id: "jsonfmt", name: "JSON格式化", icon: "{ }", desc: "JSON美化/压缩/校验" },
+            { id: "xmlfmt", name: "XML格式化", icon: "📄", desc: "XML美化/压缩" },
+            { id: "timetimestamp", name: "时间戳转换", icon: "🕐", desc: "时间戳与日期互转" },
+            { id: "colorpicker", name: "颜色转换", icon: "🎨", desc: "HEX/RGB/HSL互转" },
+            { id: "unitconverter", name: "单位换算", icon: "📐", desc: "长度/重量/温度换算" },
+            { id: "urlencoder", name: "URL编码", icon: "🔗", desc: "URL编码/解码" },
+            { id: "htmlencode", name: "HTML实体", icon: "🏷️", desc: "HTML实体编解码" },
+        ]
+    },
+    {
+        category: "🎵 媒体工具",
+        tools: [
+            { id: "video2gif", name: "视频转GIF", icon: "🎬", desc: "截取视频片段转GIF" },
+            { id: "qrcode", name: "二维码生成", icon: "📱", desc: "生成二维码/链接转二维码" },
+            { id: "barcode", name: "条形码生成", icon: "📊", desc: "生成各种条形码" },
+            { id: "qrdecoder", name: "二维码解码", icon: "📷", desc: "识别图片中的二维码" },
+        ]
+    },
+    {
+        category: "🛡️ 安全工具",
+        tools: [
+            { id: "hashgen", name: "哈希生成", icon: "#", desc: "MD5/SHA等哈希计算" },
+            { id: "hashverify", name: "哈希校验", icon: "✅", desc: "验证文件哈希值" },
+            { id: "jwtdecoder", name: "JWT解析", icon: "🔓", desc: "解码JWT Token" },
+            { id: "uuidgen", name: "随机密码", icon: "🔑", desc: "强随机密码生成" },
+        ]
+    },
+    {
+        category: "📋 开发者",
+        tools: [
+            { id: "crontab", name: "Cron表达式", icon: "⏰", desc: "Cron时间表达式生成" },
+            { id: "base64text", name: "Base64文本", icon: "📝", desc: "文本Base64编码解码" },
+            { id: "markdown", name: "Markdown预览", icon: "📝", desc: "实时预览Markdown" },
+            { id: "colorformat", name: "颜色格式", icon: "🎨", desc: "颜色代码互转" },
+            { id: "jwtgen", name: "JWT生成", icon: "🔐", desc: "生成测试用JWT" },
+        ]
+    }
+];
+
+// ========== 工具函数 ==========
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => showToast("✅ 已复制到剪贴板"));
+}
+
+function formatBytes(bytes) {
+    if (bytes === 0) return "0 B";
+    const k = 1024;
+    const sizes = ["B","KB","MB","GB"];
+    const i = Math.floor(Math.log(bytes)/Math.log(k));
+    return parseFloat((bytes/Math.pow(k,i)).toFixed(2))+" "+sizes[i];
+}
+
+// ========== 工具函数实现 ==========
+const TOOL_FNS = {
+    dedup: () => ({
+        inputs: '<textarea id="dedup_in" placeholder="每行一个内容，重复行会被去除"></textarea>',
+        action: () => {
+            const lines = document.getElementById("dedup_in").value.split("\n");
+            const seen = new Set();
+            const result = [];
+            for (const l of lines) {
+                if (l && !seen.has(l)) { seen.add(l); result.push(l); }
+            }
+            return result.join("\n");
+        }
+    }),
+    counter: () => ({
+        inputs: '<textarea id="counter_in" placeholder="输入要统计的文本..."></textarea><div class="btn-group"><button class="btn btn-primary" onclick="runTool(\'counter\')">统计</button></div><div id="counter_result" style="display:none"></div>',
+        action: () => {
+            const t = document.getElementById("counter_in").value;
+            const chinese = (t.match(/[\u4e00-\u9fa5]/g)||[]).length;
+            const english = (t.match(/[a-zA-Z]/g)||[]).length;
+            const nums = (t.match(/\d/g)||[]).length;
+            const lines = t.split("\n").filter(l=>l.trim()).length;
+            const html = `<div class="result-box">
+字数: ${t.length} | 中文字符: ${chinese} | 英文字母: ${english} | 数字: ${nums}
+行数: ${lines} | 段落: ${(t.split(/\n\s*\n/).filter(l=>l.trim()).length)}
+</div>`;
+            const el = document.getElementById("counter_result");
+            el.innerHTML = html;
+            el.style.display = "block";
+            return "";
+        }
+    }),
+    password: () => ({
+        inputs: `<label>密码长度</label><input type="number" id="pwd_len" value="16" min="6" max="128">
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('password')">生成</button>
+</div>`,
+        action: () => {
+            const len = parseInt(document.getElementById("pwd_len").value) || 16;
+            const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789!@#$%&*";
+            let pwd = "";
+            for (let i = 0; i < len; i++)
+                pwd += chars[Math.floor(Math.random()*chars.length)];
+            return pwd;
+        }
+    }),
+    uuid: () => ({
+        inputs: `<label>生成数量</label><input type="number" id="uuid_cnt" value="5" min="1" max="100">
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('uuid')">生成</button>
+</div>`,
+        action: () => {
+            const cnt = parseInt(document.getElementById("uuid_cnt").value) || 5;
+            const uuids = [];
+            for (let i = 0; i < cnt; i++) {
+                uuids.push(crypto.randomUUID());
+            }
+            return uuids.join("\n");
+        }
+    }),
+    random: () => ({
+        inputs: `<label>最小值</label><input type="number" id="rand_min" value="1">
+<label>最大值</label><input type="number" id="rand_max" value="100">
+<label>数量</label><input type="number" id="rand_cnt" value="1" min="1" max="100">
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('random')">抽取</button>
+</div>`,
+        action: () => {
+            const min = parseInt(document.getElementById("rand_min").value) || 1;
+            const max = parseInt(document.getElementById("rand_max").value) || 100;
+            const cnt = parseInt(document.getElementById("rand_cnt").value) || 1;
+            const nums = [];
+            for (let i = 0; i < cnt; i++)
+                nums.push(Math.floor(Math.random()*(max-min+1))+min);
+            return nums.join("\n");
+        }
+    }),
+    regex: () => ({
+        inputs: `<label>正则表达式</label><input type="text" id="regex_pat" placeholder="如: \\d+">
+<label>测试文本</label><textarea id="regex_text" placeholder="输入要匹配的文本..." rows="4"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('regex')">测试</button>
+</div>`,
+        action: () => {
+            try {
+                const pat = document.getElementById("regex_pat").value;
+                const text = document.getElementById("regex_text").value;
+                const re = new RegExp(pat, "g");
+                const matches = text.match(re) || [];
+                return `匹配数: ${matches.length}\n匹配结果:\n${matches.join("\n")}`;
+            } catch(e) {
+                return "❌ 正则表达式错误: " + e.message;
+            }
+        }
+    }),
+    img2base64: () => ({
+        inputs: `<div class="file-drop" onclick="document.getElementById('i2b_file').click()">
+<input type="file" id="i2b_file" accept="image/*" onchange="handleImg2Base64(this)">
+<p>点击选择图片 或 拖拽到此处</p>
+</div>
+<div id="i2b_result" style="display:none">
+<label>Base64 结果</label>
+<div class="result-box" id="i2b_output"></div>
+</div>`,
+        action: () => ""
+    }),
+    base642img: () => ({
+        inputs: `<label>Base64 文本（不含前缀）</label>
+<textarea id="b2i_in" placeholder="data:image/png;base64,开头的请删除前缀部分" rows="5"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('base642img')">转换</button>
+</div>
+<div id="b2i_result" style="display:none"></div>`,
+        action: () => {
+            const b64 = document.getElementById("b2i_in").value.trim();
+            try {
+                const html = `<a href="data:image/png;base64,${b64}" download="converted.png"><button class="btn btn-primary">下载图片</button></a>`;
+                document.getElementById("b2i_result").innerHTML = html;
+                document.getElementById("b2i_result").style.display = "block";
+            } catch(e) {
+                return "❌ 转换失败: " + e.message;
+            }
+            return "";
+        }
+    }),
+    imgcompress: () => ({
+        inputs: `<div class="file-drop" onclick="document.getElementById('ic_file').click()">
+<input type="file" id="ic_file" accept="image/*" onchange="handleImgCompress(this)">
+<p>点击选择图片（支持 JPG/PNG/WebP）</p>
+</div>
+<div id="ic_opts" style="display:none">
+<label>压缩质量 (%)</label>
+<input type="number" id="ic_quality" value="80" min="10" max="100">
+<button class="btn btn-primary" onclick="runTool('imgcompress')">压缩</button>
+</div>
+<div id="ic_result" style="display:none"></div>`,
+        action: () => ""
+    }),
+    png2jpg: () => ({
+        inputs: `<div class="file-drop" onclick="document.getElementById('p2j_file').click()">
+<input type="file" id="p2j_file" accept="image/*" onchange="handlePng2Jpg(this)">
+<p>点击选择PNG图片</p>
+</div>
+<div id="p2j_result" style="display:none"></div>`,
+        action: () => ""
+    }),
+    jsonfmt: () => ({
+        inputs: `<label>输入 JSON</label>
+<textarea id="jf_in" placeholder="粘贴 JSON 内容..." rows="6"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('jsonfmt')">格式化</button>
+<button class="btn" onclick="runTool('jsonfmt_compact')">压缩</button>
+<button class="btn btn-danger" onclick="runTool('jsonfmt_validate')">校验</button>
+</div>`,
+        action: () => {
+            try {
+                const obj = JSON.parse(document.getElementById("jf_in").value);
+                return JSON.stringify(obj, null, 2);
+            } catch(e) { return "❌ JSON 格式错误: " + e.message; }
+        }
+    }),
+    qrcode: () => ({
+        inputs: `<label>内容 / 链接</label>
+<input type="text" id="qr_content" placeholder="输入要生成二维码的内容">
+<label>尺寸</label>
+<input type="number" id="qr_size" value="200" min="100" max="400">
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('qrcode')">生成</button>
+</div>
+<div id="qr_result" style="display:none">
+<label>二维码</label>
+<div class="result-box" id="qr_output"></div>
+</div>`,
+        action: () => {
+            const text = document.getElementById("qr_content").value;
+            const size = document.getElementById("qr_size").value;
+            if (!text) return "⚠️ 请输入内容";
+            // 使用 qrcode.js CDN
+            const html = `<div id="qrcode_target"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script>
+<script>
+document.getElementById("qrcode_target").innerHTML = "";
+new QRCode(document.getElementById("qrcode_target"), {text:"${text.replace(/"/g,'\\"')}", width:${size}, height:${size}});
+<\/script>`;
+            document.getElementById("qr_result").style.display = "block";
+            document.getElementById("qr_output").innerHTML = `<div id="qrcode_container"></div>`;
+            // 简单SVG方式
+            const html2 = `<div style="padding:1rem;text-align:center"><p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:0.5rem">扫码访问:</p><div id="qrcode_svg"></div></div>`;
+            document.getElementById("qr_result").innerHTML = html2;
+            // 动态加载QRCode库
+            return "⏳ 正在生成二维码...";
+        }
+    }),
+    qrdecoder: () => ({
+        inputs: `<div class="file-drop" onclick="document.getElementById('qrd_file').click()">
+<input type="file" id="qrd_file" accept="image/*" onchange="handleQrDecode(this)">
+<p>点击上传含二维码的图片</p>
+</div>
+<div id="qrd_result" style="display:none">
+<label>解码结果</label>
+<div class="result-box" id="qrd_output"></div>
+</div>`,
+        action: () => ""
+    }),
+    hashgen: () => ({
+        inputs: `<label>输入文本</label>
+<textarea id="hg_in" rows="4"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('hashgen_md5')">MD5</button>
+<button class="btn btn-primary" onclick="runTool('hashgen_sha1')">SHA-1</button>
+<button class="btn btn-primary" onclick="runTool('hashgen_sha256')">SHA-256</button>
+<button class="btn btn-primary" onclick="runTool('hashgen_sha512')">SHA-512</button>
+</div>`,
+        action: () => ""
+    }),
+    jwtdecoder: () => ({
+        inputs: `<label>JWT Token</label>
+<textarea id="jd_in" rows="3" placeholder="粘贴 JWT token..."></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('jwtdecoder')">解析</button>
+</div>
+<div id="jd_result" style="display:none"></div>`,
+        action: () => {
+            const token = document.getElementById("jd_in").value.trim();
+            try {
+                const parts = token.split(".");
+                const decode = b => JSON.parse(atob(b.replace(/-/g,"+").replace(/_/g,"/").padEnd(b.length+(4-b.length%4)%4,"=")));
+                const header = decode(parts[0]);
+                const payload = decode(parts[1]);
+                const html = `<label>Header</label><div class="result-box">${JSON.stringify(header,null,2)}</div>
+<label>Payload</label><div class="result-box">${JSON.stringify(payload,null,2)}</div>
+<label>Signature</label><div class="result-box">${parts[2]}</div>`;
+                document.getElementById("jd_result").innerHTML = html;
+                document.getElementById("jd_result").style.display = "block";
+            } catch(e) { return "❌ 解析失败: " + e.message; }
+            return "";
+        }
+    }),
+    crontab: () => ({
+        inputs: `<label>选择执行频率</label>
+<select id="ct_type" style="width:100%;padding:0.8rem;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);margin-bottom:0.8rem;font-size:0.95rem">
+<option value="5min">每5分钟</option>
+<option value="15min">每15分钟</option>
+<option value="30min">每30分钟</option>
+<option value="1hour">每小时</option>
+<option value="daily">每天 00:00</option>
+<option value="weekly">每周一 00:00</option>
+<option value="monthly">每月1日 00:00</option>
+</select>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('crontab')">生成</button>
+</div>`,
+        action: () => {
+            const type = document.getElementById("ct_type").value;
+            const map = {
+                "5min": "*/5 * * * *",
+                "15min": "*/15 * * * *",
+                "30min": "*/30 * * * *",
+                "1hour": "0 * * * *",
+                "daily": "0 0 * * *",
+                "weekly": "0 0 * * 1",
+                "monthly": "0 0 1 * *"
+            };
+            return (map[type] || "") + "\n\n解释: " + {
+                "5min":"每小时的第0,5,10...55分钟",
+                "15min":"每小时的第0,15,30,45分钟",
+                "30min":"每小时的第0,30分钟",
+                "1hour":"每小时的整点",
+                "daily":"每天午夜00:00",
+                "weekly":"每周一00:00",
+                "monthly":"每月1日00:00"
+            }[type];
+        }
+    }),
+    base64text: () => ({
+        inputs: `<textarea id="b64_in" rows="4" placeholder="输入文本..."></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('base64_encode')">编码</button>
+<button class="btn btn-primary" onclick="runTool('base64_decode')">解码</button>
+</div>`,
+        action: () => {
+            const t = document.getElementById("b64_in").value;
+            return btoa(unescape(encodeURIComponent(t)));
+        }
+    }),
+    timetimestamp: () => ({
+        inputs: `<label>选择操作</label>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('ts_now')">当前时间戳</button>
+<button class="btn" onclick="runTool('ts_to_date')">时间戳→日期</button>
+<button class="btn" onclick="runTool('ts_from_date')">日期→时间戳</button>
+</div>
+<input type="number" id="ts_val" placeholder="输入时间戳（秒）">
+<input type="text" id="ts_date" placeholder="输入日期如 2025-01-01 00:00:00">`,
+        action: () => ""
+    }),
+    markdown: () => ({
+        inputs: `<textarea id="md_in" placeholder="# 标题\n\n输入 Markdown 内容..." rows="8"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('markdown_preview')">预览</button>
+</div>
+<div id="md_result" style="display:none">
+<div id="md_preview" style="padding:1rem;background:var(--bg-card);border-radius:8px;min-height:100px"></div>
+</div>`,
+        action: () => {
+            document.getElementById("md_result").style.display = "block";
+            document.getElementById("md_preview").innerHTML = simpleMarkdown(document.getElementById("md_in").value);
+            return "";
+        }
+    }),
+    contrast: () => ({
+        inputs: `<label>文本 A</label>
+<textarea id="ct_a" rows="5"></textarea>
+<label>文本 B</label>
+<textarea id="ct_b" rows="5"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('contrast')">对比</button>
+</div>`,
+        action: () => {
+            const a = document.getElementById("ct_a").value.split("\n");
+            const b = new Set(document.getElementById("ct_b").value.split("\n"));
+            const onlyA = a.filter(l => l && !b.has(l));
+            return onlyA.length ? "仅 A 包含:\n" + onlyA.join("\n") : "两边完全一致 ✅";
+        }
+    }),
+    colorpicker: () => ({
+        inputs: `<label>HEX 颜色</label>
+<input type="text" id="cp_hex" value="#4f46e5" placeholder="#4f46e5">
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('colorpicker')">转换</button>
+</div>
+<div id="cp_result" style="display:none"></div>`,
+        action: () => {
+            const hex = document.getElementById("cp_hex").value;
+            const r = parseInt(hex.slice(1,3),16);
+            const g = parseInt(hex.slice(3,5),16);
+            const b = parseInt(hex.slice(5,7),16);
+            const h = rgb2hsl(r,g,b);
+            const html = `<div style="display:flex;align-items:center;gap:1rem">
+<div style="width:60px;height:60px;background:${hex};border-radius:8px"></div>
+<div><div>HEX: ${hex}</div>
+<div>RGB: rgb(${r},${g},${b})</div>
+<div>HSL: hsl(${h.h},${h.s}%,${h.l}%)</div></div></div>`;
+            document.getElementById("cp_result").innerHTML = html;
+            document.getElementById("cp_result").style.display = "block";
+            return "";
+        }
+    }),
+    urlencoder: () => ({
+        inputs: `<textarea id="ue_in" rows="3" placeholder="输入 URL..."></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('url_encode')">编码</button>
+<button class="btn" onclick="runTool('url_decode')">解码</button>
+</div>`,
+        action: () => encodeURIComponent(document.getElementById("ue_in").value)
+    }),
+    htmlencode: () => ({
+        inputs: `<textarea id="he_in" rows="3"></textarea>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('html_encode')">编码</button>
+<button class="btn" onclick="runTool('html_decode')">解码</button>
+</div>`,
+        action: () => {
+            const d = document.createElement("div");
+            d.textContent = document.getElementById("he_in").value;
+            return d.innerHTML;
+        }
+    }),
+    hashverify: () => ({
+        inputs: `<label>原始文件</label>
+<div class="file-drop" onclick="document.getElementById('hv_file').click()">
+<input type="file" id="hv_file" onchange="handleHashFile(this)">
+<p>点击选择文件</p>
+</div>
+<label>预期哈希值</label>
+<input type="text" id="hv_expected" placeholder="粘贴预期哈希值">
+<div class="btn-group">
+<button class="btn btn-primary" onclick="runTool('hashverify')">校验</button>
+</div>
+<div id="hv_result" style="display:none"></div>`,
+        action: () => ""
+    }),
+};
+
+// ========== 工具处理函数 ==========
+function handleImg2Base64(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const b64 = e.target.result;
+        document.getElementById("i2b_result").style.display = "block";
+        document.getElementById("i2b_output").innerHTML = b64;
+    };
+    reader.readAsDataURL(file);
+}
+
+function handlePng2Jpg(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+            const c = document.createElement("canvas");
+            c.width = img.width; c.height = img.height;
+            c.getContext("2d").drawImage(img,0,0);
+            const jpg = c.toDataURL("image/jpeg",0.9);
+            document.getElementById("p2j_result").style.display = "block";
+            document.getElementById("p2j_result").innerHTML = `<div style="padding:1rem"><img src="${jpg}" style="max-width:100%;border-radius:8px;margin-bottom:0.5rem"><br><a href="${jpg}" download="converted.jpg"><button class="btn btn-primary">下载 JPG</button></a></div>`;
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleImgCompress(input) {
+    const file = input.files[0];
+    if (!file) return;
+    document.getElementById("ic_opts").style.display = "block";
+    window._ic_file = file;
+}
+
+function handleQrDecode(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById("qrd_result").style.display = "block";
+        document.getElementById("qrd_output").innerHTML = "⏳ 正在识别...";
+        // 使用内置JS模拟（实际需要调用识别API）
+        document.getElementById("qrd_output").innerHTML = "⚠️ 二维码识别需要调用外部API，请手动扫码获取内容";
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleHashFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+    window._hv_file = file;
+    // 计算SHA-256
+    const reader = new FileReader();
+    reader.onload = async e => {
+        const buf = e.target.result;
+        const hash = await crypto.subtle.digest("SHA-256", buf);
+        const hex = Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+        document.getElementById("hv_result").innerHTML = `<div class="result-box" id="hv_actual">SHA-256:\n${hex}</div>`;
+        document.getElementById("hv_result").style.display = "block";
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function rgb2hsl(r,g,b) {
+    r/=255;g/=255;b/=255;
+    const max=Math.max(r,g,b),min=Math.min(r,g,b);
+    let h,s,l=(max+min)/2;
+    if(max===min){h=s=0;}
+    else{const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min);
+        switch(max){
+            case r: h=((g-b)/d+(g<b?6:0))/6; break;
+            case g: h=((b-r)/d+2)/6; break;
+            case b: h=((r-g)/d+4)/6; break;
+        }
+    }
+    return {h:Math.round(h*360), s:Math.round(s*100), l:Math.round(l*100)};
+}
+
+function simpleMarkdown(text) {
+    return text
+        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.+?)\*/g, "<em>$1</em>")
+        .replace(/`(.+?)`/g, "<code style='background:#1e293b;padding:2px 6px;border-radius:4px'>$1</code>")
+        .replace(/\n/g, "<br>");
+}
+
+// ========== 运行工具 ==========
+function runTool(id) {
+    const resultEl = document.querySelector(`[data-tool="${id}"] .result-box[data-result]`);
+    const append = id.includes("hashgen") || id.includes("jsonfmt_compact") || id.includes("jsonfmt_validate");
+    let result;
+
+    if (id === "dedup") {
+        const lines = document.getElementById("dedup_in").value.split("\n");
+        const seen = new Set(); const out = [];
+        for (const l of lines) { if (l && !seen.has(l)) { seen.add(l); out.push(l); } }
+        result = out.join("\n");
+    } else if (id === "counter") {
+        // counter has custom action
+        return;
+    } else if (id === "password") {
+        const len = parseInt(document.getElementById("pwd_len").value)||16;
+        const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789!@#$%&*";
+        result = Array.from({length:len},()=>chars[Math.floor(Math.random()*chars.length)]).join("");
+    } else if (id === "uuid") {
+        const cnt = parseInt(document.getElementById("uuid_cnt").value)||5;
+        result = Array.from({length:cnt},()=>crypto.randomUUID()).join("\n");
+    } else if (id === "random") {
+        const mn=parseInt(document.getElementById("rand_min").value)||1;
+        const mx=parseInt(document.getElementById("rand_max").value)||100;
+        const c=parseInt(document.getElementById("rand_cnt").value)||1;
+        result = Array.from({length:c},()=>Math.floor(Math.random()*(mx-mn+1))+mn).join("\n");
+    } else if (id === "regex") {
+        try {
+            const re = new RegExp(document.getElementById("regex_pat").value, "g");
+            const matches = (document.getElementById("regex_text").value.match(re))||[];
+            result = `匹配数: ${matches.length}\n` + matches.join("\n");
+        } catch(e) { result = "❌ 正则错误: "+e.message; }
+    } else if (id === "jsonfmt") {
+        try { result = JSON.stringify(JSON.parse(document.getElementById("jf_in").value),null,2); }
+        catch(e) { result = "❌ JSON错误: "+e.message; }
+    } else if (id === "jsonfmt_compact") {
+        try { result = JSON.stringify(JSON.parse(document.getElementById("jf_in").value)); }
+        catch(e) { result = "❌ JSON错误: "+e.message; }
+    } else if (id === "jsonfmt_validate") {
+        try { JSON.parse(document.getElementById("jf_in").value); result = "✅ JSON 格式正确"; }
+        catch(e) { result = "❌ JSON 错误: "+e.message; }
+    } else if (id === "base642img") {
+        return;
+    } else if (id === "base64_encode") {
+        result = btoa(unescape(encodeURIComponent(document.getElementById("b64_in").value)));
+    } else if (id === "base64_decode") {
+        try { result = decodeURIComponent(escape(atob(document.getElementById("b64_in").value))); }
+        catch(e) { result = "❌ Base64 解码错误: "+e.message; }
+    } else if (id === "url_encode") {
+        result = encodeURIComponent(document.getElementById("ue_in").value);
+    } else if (id === "url_decode") {
+        try { result = decodeURIComponent(document.getElementById("ue_in").value); }
+        catch(e) { result = "❌ URL 解码错误: "+e.message; }
+    } else if (id === "html_encode") {
+        const d=document.createElement("div"); d.textContent=document.getElementById("he_in").value;
+        result = d.innerHTML;
+    } else if (id === "html_decode") {
+        const d=document.createElement("div"); d.innerHTML=document.getElementById("he_in").value;
+        result = d.textContent;
+    } else if (id === "ts_now") {
+        const n = Date.now();
+        document.getElementById("ts_val").value = Math.floor(n/1000);
+        document.getElementById("ts_date").value = new Date(n).toLocaleString("zh-CN");
+        result = "";
+    } else if (id === "ts_to_date") {
+        const ts = parseInt(document.getElementById("ts_val").value);
+        if (ts > 1e12) result = new Date(ts).toLocaleString("zh-CN");
+        else if (ts > 1e9) result = new Date(ts*1000).toLocaleString("zh-CN");
+        else result = "❌ 时间戳格式错误";
+    } else if (id === "ts_from_date") {
+        const d = new Date(document.getElementById("ts_date").value);
+        result = (d.getTime()/1000).toFixed(0);
+    } else if (id === "crontab") {
+        const map={"5min":"*/5 * * * *","15min":"*/15 * * * *","30min":"*/30 * * * *","1hour":"0 * * * *","daily":"0 0 * * *","weekly":"0 0 * * 1","monthly":"0 0 1 * *"};
+        const exp={"5min":"每5分钟","15min":"每15分钟","30min":"每30分钟","1hour":"每小时","daily":"每天午夜","weekly":"每周一","monthly":"每月1日"};
+        const t = document.getElementById("ct_type").value;
+        result = map[t]+"\n解释: "+exp[t];
+    } else if (id === "hashgen_md5") {
+        result = "⚠️ MD5 需要引入库，请使用 SHA 系列";
+    } else if (id === "hashgen_sha1") {
+        result = "⚠️ SHA-1 需要引入库，请使用 SHA-256";
+    } else if (id === "hashgen_sha256") {
+        return;
+    } else if (id === "hashgen_sha512") {
+        result = "⚠️ SHA-512 需要引入库";
+    } else if (id === "contrast") {
+        const a = document.getElementById("ct_a").value.split("\n");
+        const b = new Set(document.getElementById("ct_b").value.split("\n"));
+        const diff = a.filter(l=>l && !b.has(l));
+        result = diff.length ? "仅 A 包含:\n" + diff.join("\n") : "✅ 两边完全一致";
+    } else if (id === "qrcode") {
+        const text = document.getElementById("qr_content").value;
+        if (!text) { result = "⚠️ 请输入内容"; }
+        else {
+            const size = parseInt(document.getElementById("qr_size").value)||200;
+            document.getElementById("qr_result").style.display = "block";
+            document.getElementById("qr_output").innerHTML = `<div style="text-align:center"><div id="qr_c"></div><p style="color:var(--text-muted);margin-top:0.5rem">扫描访问: ${text.substring(0,30)}${text.length>30?"...":""}</p></div>`;
+            // 加载qrcode库
+            if (!window.QRCode) {
+                const s = document.createElement("script");
+                s.src = "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js";
+                s.onload = () => { new QRCode(document.getElementById("qr_c"), {text, width:size, height:size}); };
+                document.head.appendChild(s);
+            } else {
+                new QRCode(document.getElementById("qr_c"), {text, width:size, height:size});
+            }
+            result = "";
+        }
+    } else if (id === "colorpicker") {
+        return;
+    } else if (id === "markdown_preview") {
+        return;
+    } else if (id === "imgcompress") {
+        if (!window._ic_file) return;
+        const quality = parseInt(document.getElementById("ic_quality").value)/100||0.8;
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = new Image();
+            img.onload = () => {
+                const c = document.createElement("canvas");
+                c.width = img.width; c.height = img.height;
+                c.getContext("2d").drawImage(img,0,0);
+                c.toBlob(blob => {
+                    const orig = window._ic_file.size;
+                    const comp = blob.size;
+                    document.getElementById("ic_result").innerHTML = `<div style="padding:1rem"><p>原始: ${formatBytes(orig)} → 压缩后: ${formatBytes(comp)} (${Math.round(comp/orig*100)}%)</p><a href="${URL.createObjectURL(blob)}" download="compressed.jpg"><button class="btn btn-primary">下载压缩后图片</button></a></div>`;
+                    document.getElementById("ic_result").style.display = "block";
+                }, "image/jpeg", quality);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(window._ic_file);
+        return;
+    } else if (id === "hashverify") {
+        return;
+    }
+
+    if (result !== undefined && result !== "") {
+        const panel = document.querySelector(`.panel.active`);
+        if (panel) {
+            let rb = panel.querySelector(".result-box[data-result]");
+            if (!rb) {
+                rb = document.createElement("div");
+                rb.className = "result-box";
+                rb.setAttribute("data-result", "true");
+                panel.appendChild(rb);
+            }
+            rb.className = "result-box success";
+            rb.innerHTML = result + '<button class="copy-btn" onclick="copyText(this.parentElement.innerText.replace(\'复制\',\'\').trim())">复制</button>';
+        }
+    }
+}
+
+// ========== UI 渲染 ==========
+function renderTools() {
+    const tabs = document.getElementById("tabs");
+    const panels = document.getElementById("toolPanels");
+    tabs.innerHTML = "";
+    panels.innerHTML = "";
+
+    TOOLS.forEach((cat, ci) => {
+        tabs.innerHTML += `<button class="tab${ci===0?' active':''}" onclick="switchTab(${ci})">${cat.category}</button>`;
+
+        const panel = document.createElement("div");
+        panel.className = "panel" + (ci===0?" active":"");
+        panel.id = "panel-" + ci;
+
+        let html = '<div class="tool-grid">';
+        cat.tools.forEach(t => {
+            html += `<div class="tool-card" onclick="openTool('${t.id}')">
+<span class="icon">${t.icon}</span>
+<div class="name">${t.name}</div>
+<div class="desc">${t.desc}</div>
+</div>`;
+        });
+        html += '</div>';
+        panel.innerHTML = html;
+        panels.appendChild(panel);
+    });
+}
+
+function switchTab(idx) {
+    document.querySelectorAll(".tab").forEach((t,i) => t.classList.toggle("active", i===idx));
+    document.querySelectorAll(".panel").forEach((p,i) => p.classList.toggle("active", i===idx));
+}
+
+function openTool(id) {
+    // 找到工具所在的 tab 并切换
+    TOOLS.forEach((cat, ci) => {
+        if (cat.tools.find(t => t.id === id)) {
+            switchTab(ci);
+        }
+    });
+
+    // 渲染工具面板
+    const toolDef = TOOLS.flatMap(c=>c.tools).find(t=>t.id===id);
+    const panel = document.querySelector(".panel.active");
+    const fn = TOOL_FNS[id];
+    if (!fn) {
+        panel.innerHTML = `<div class="panel-header"><h2>${toolDef.icon} ${toolDef.name}</h2><button class="close-btn" onclick="renderTools()">← 返回</button></div><p style="color:var(--text-muted)">此工具正在开发中...</p>`;
+        return;
+    }
+    const cfg = fn();
+    panel.innerHTML = `<div class="panel-header"><h2>${toolDef.icon} ${toolDef.name}</h2><button class="close-btn" onclick="renderTools()">← 返回</button></div>
+${cfg.inputs || ''}
+<div class="result-box" data-result="true" style="display:none"></div>`;
+    if (cfg.action_text) {
+        const rb = panel.querySelector(".result-box");
+        rb.style.display = "block";
+        rb.className = "result-box success";
+        rb.innerHTML = cfg.action_text + '<button class="copy-btn" onclick="copyText(this.parentElement.innerText.replace(\'复制\',\'\').trim())">复制</button>';
+    }
+}
+
+// Make runTool global
+window.runTool = runTool;
+window.handleImg2Base64 = handleImg2Base64;
+window.handlePng2Jpg = handlePng2Jpg;
+window.handleImgCompress = handleImgCompress;
+window.handleQrDecode = handleQrDecode;
+window.handleHashFile = handleHashFile;
+
+// Init
+renderTools();
+</script>
+</body>
+</html>
